@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 
-export default function Register({ setUser}) {
+export default function Register({ setUser }) {
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
@@ -26,8 +26,11 @@ export default function Register({ setUser}) {
       try {
         setIsRegistering(true); 
         const res = await axios.post("http://localhost:5000/api/user/register", formData);
-        setUser(res.data);
+
         localStorage.setItem("token", res.data.token);
+        console.log("reached here");
+        console.log(res.data);
+        setUser(res.data.user);
         toast.success("Registered successfully");
         navigate("/login");
       }
