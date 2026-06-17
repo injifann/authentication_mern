@@ -24,6 +24,7 @@ export const Loginauth = async (req,res)=>{
     }
     
 }
+
 export const Registerauth =async(req,res)=>
 
 { 
