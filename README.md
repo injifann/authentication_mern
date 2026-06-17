@@ -40,6 +40,7 @@ A fully functional User Authentication system built using the **MERN Stack** (Mo
 - **React.js**: User interface generation.
 - **React Router**: Client-side page navigation.
 - **Axios**: Promise-based HTTP requests to API endpoints.
+- **Tailwind css**: styling UI
 
 ---
 ### Setup the Backend Environment
