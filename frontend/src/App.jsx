@@ -50,9 +50,9 @@ export default function App() {
   
   return (
         <Routes>
-          <Route path='/' element ={ user?<HomePage setUser={setUser} error={error}/>:<Navigate to="/login"/>}></Route>
-          <Route path='/login' element ={<Login/>}></Route>
-          <Route path='/register' element ={<Register/>}></Route>
+          <Route path='/' element ={ user?<HomePage user={user} setUser={setUser} error={error}/>:<Navigate to="/login"/>}></Route>
+          <Route path='/login' element ={<Login setUser={setUser}/>}></Route>
+          <Route path='/register' element ={<Register setUser={setUser}/>}></Route>
         </Routes>
   )
 }
