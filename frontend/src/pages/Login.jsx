@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login({ setUser }) {
   const [formData, setFormData] = useState({
@@ -11,10 +12,29 @@ export default function Login({ setUser }) {
   const [islogging, setIslogging] = useState(false);
   const navigate = useNavigate();
 
+  const handleGoogleSuccess=async(credentialResponse)=>{
+
+    try
+    {
+      const res=await axios.post("http://localhost:5000/api/user/googleAuth",{
+        token:credentialResponse.credential
+      })
+      localStorage.setItem("token",res.data.token);
+
+      setUser(res.data.user);
+      navigate("/");
+
+    }
+    catch(error)
+    {
+     toast.error(error.response?.data?.error || error.response?.data?.message || "Failed to login");
+    }
+
+  }
   const handleInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-
+   
   const handleSubmission = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
@@ -100,6 +120,23 @@ export default function Login({ setUser }) {
               >
                 {islogging ? "Log in..." : "Log in"}
               </button>
+            </div>
+            
+            <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto p-4 bg-gray-50 rounded-2xl border border-gray-100">
+  
+          {/* Minimalist text header */}
+                <p className="text-xs font-semibold tracking-wider text-gray-400 uppercase mb-4">
+                  Or continue with Google
+                </p>
+                
+                {/* The Google Button Wrapper */}
+                <div className="w-full flex justify-center filter drop-shadow-sm">
+                  <GoogleLogin
+                   onSuccess={handleGoogleSuccess} 
+                   onError={()=>{toast.error("Failed to Login")}}
+                  />
+                </div>
+
             </div>
             
             {/* Styled Link to Register */}

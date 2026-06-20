@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Register({ setUser }) {
   const [formData, setFormData] = useState({
@@ -12,6 +13,22 @@ export default function Register({ setUser }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
 
+
+  const handleGoogleSuccess=async (credentialResponse)=>
+  {
+    try{
+    const res= await axios.post("http://localhost:5000/api/user/googleAuth",
+      {token:credentialResponse.credential});
+
+       localStorage.setItem("token",res.data.token);
+       setUser(res.data.user);
+       navigate("/");
+    }
+    catch(error)
+    {
+      toast.error(error.response?.data?.message || error.response?.data?.error);
+    }
+  }
   const handleInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
@@ -111,6 +128,18 @@ export default function Register({ setUser }) {
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
               />
             </div>
+
+                <p className="text-xs font-semibold tracking-wider text-gray-400 uppercase mb-4">
+                  Or continue with Google
+                </p>
+                
+                {/* The Google Button Wrapper */}
+                <div className="w-full flex justify-center filter drop-shadow-sm">
+                  <GoogleLogin
+                   onSuccess={handleGoogleSuccess} 
+                   onError={()=>{toast.error("Failed to Register")}}
+                  />
+                </div>
 
             {/* Submit Button */}
             <div className="pt-2">
