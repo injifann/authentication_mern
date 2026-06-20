@@ -5,7 +5,7 @@ import {OAuth2Client} from 'google-auth-library';
 const client= new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
-export const GoogleAuth=async(req,res)=>
+export const googleAuth=async(req,res)=>
 {
     const {token}=req.body;
     try
@@ -31,7 +31,7 @@ export const GoogleAuth=async(req,res)=>
             })
 
             const appToken=generateToken(user._id);
-             return res.status(200).json({message:"google account successfully linked",user,token:appToken});  
+             return res.status(201).json({message:"google account successfully linked",user,token:appToken});  
         }
 
         if(user && !user.googleId)
@@ -59,13 +59,15 @@ export const GoogleAuth=async(req,res)=>
 export const Loginauth = async (req,res)=>{
     
     const{email,password}=req.body;
+
     if(!email || !password  )
     {
-        return res.status(401).json({message:"Envalid credentials"});
+        return res.status(400).json({message:"Envalid credentials"});
     }
     try
     {
       const user= await User.findOne({email});
+
       if(!user || ! (await user.checkPassword(password))){
         return res.status(401).json({message:"Envalid password or email"});
        }
@@ -89,14 +91,14 @@ export const Registerauth =async(req,res)=>
 
     if(!userName || !email || !password)
     {
-      return res.status(401).json({message:"please Enter all fields"});
+      return res.status(400).json({message:"please Enter all fields"});
     }
      try
      {
           const userExist= await User.findOne({email});
           if(userExist)
           {
-             return res.status(401).json({message:"User already exist"});
+             return res.status(409).json({message:"User already exist"});
           }
           
           const user= await User.create({userName,email,password});
@@ -112,7 +114,7 @@ export const Registerauth =async(req,res)=>
 }
 
 export const getMe=async(req,res)=>{
-    res.status(201).json(req.user)
+    res.status(200).json(req.user)
 
 }
 
