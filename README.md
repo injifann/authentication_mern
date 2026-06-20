@@ -1,78 +1,178 @@
 # MERN Stack Authentication System
 
-A fully functional User Authentication system built using the **MERN Stack** (MongoDB, Express.js, React.js, and Node.js). This application implements secure user registration, login, and token-based session management, allowing authenticated users to access a protected dashboard displaying their personal account details.
+A full-featured authentication system built with the **MERN Stack** (MongoDB, Express.js, React.js, and Node.js). The application supports both **traditional email/password authentication** and **Google OAuth authentication**, providing secure access to a protected user dashboard.
 
 ---
 
 ## 📸 Application Screenshots
 
 ### 1. Register Page
-![Register Page](screenshots//Register.png)
+
+![Register Page](screenshots/Register.png)
 
 ### 2. Login Page
-![Login Page](screenshots//Login.png)
 
-### 3. User Dashboard (Name and Email)
-![User Dashboard](screenshots//Dashboard.png)
+![Login Page](screenshots/Login.png)
+
+### 3. User Dashboard
+
+![User Dashboard](screenshots/Dashboard.png)
 
 ---
 
 ## 🚀 Features
 
-- **User Registration**: Secure account creation with password hashing.
-- **User Login**: Identity verification via secure credentials matching.
-- **JWT Authentication**: JSON Web Tokens used for secure, stateless state tracking and endpoint authorization.
-- **Protected Dashboard Route**: A restricted view layer that decodes and displays the authenticated user's name and email address.
-- **Security Best Practices**: Utilizes `bcryptjs` for cryptographic password salts and hashes, alongside protected API routers.
+### Authentication
+
+* **User Registration** using email and password.
+* **User Login** with email and password.
+* **Google Sign-Up** using Google OAuth.
+* **Google Login** using Google OAuth.
+* **JWT Authentication** for secure and stateless user sessions.
+* **Automatic Account Creation** for new Google users.
+
+### Security
+
+* Password hashing using **bcryptjs**.
+* JWT-based route protection.
+* Secure authentication middleware.
+* Environment variables for sensitive credentials.
+
+### User Experience
+
+* Protected dashboard accessible only to authenticated users.
+* Displays authenticated user's profile information.
+* Persistent login using stored authentication tokens.
+* Responsive UI built with Tailwind CSS.
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## 🛠️ Tech Stack
 
 ### Backend
-- **Node.js & Express.js**: Application server framework.
-- **MongoDB & Mongoose**: Database and Object Data Modeling (ODM).
-- **jsonwebtoken (JWT)**: Authentication tokens transmission.
-- **bcryptjs**: Password hashing functions.
-- **cors & dotenv**: Cross-Origin Resource Sharing handling and environment variable management.
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* jsonwebtoken (JWT)
+* bcryptjs
+* cors
+* dotenv
 
 ### Frontend
-- **React.js**: User interface generation.
-- **React Router**: Client-side page navigation.
-- **Axios**: Promise-based HTTP requests to API endpoints.
-- **Tailwind css**: styling UI
+
+* React.js
+* React Router
+* Axios
+* Tailwind CSS
+* Google OAuth for React
 
 ---
-### Setup the Backend Environment
-   cd backend
-   npm install express mongoose bcryptjs jsonwebtoken cors dotenv
-   create .env file in root folder
-    PORT=5000
-    MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_super_secret_jwt_key
-    npm run dev
 
-### Setup the Frontend Environment
-      cd frontend
-      npm install react-router-dom axios 
-      npm install -D tailwindcss postcss autoprefixer
-      npx tailwindcss init -p
-      npm run dev
+## ⚙️ Environment Variables
 
-## 📁 Project Architecture
+Create a `.env` file inside the `backend` directory:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_super_secret_jwt_key
+GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd mern-auth-app
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
+
+npm install express mongoose bcryptjs jsonwebtoken cors dotenv
+
+npm run dev
+```
+
+### 3. Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+npm install react-router-dom axios
+npm install @react-oauth/google
+npm install -D tailwindcss postcss autoprefixer
+
+npm run dev
+```
+
+---
+
+## 📁 Project Structure
 
 ```text
 mern-auth-app/
 ├── backend/
-│   ├── config/          # Database connection configuration
-│   ├── models/          # Mongoose database schemas
-│   ├── routes/          # Express API route handlers
-│   ├── .env             # Server environment variables (gitignored)
-│   └── server.js        # Server entry point
+│   ├── config/              # Database configuration
+│   ├── controllers/         # Authentication controllers
+│   ├── middleware/          # JWT authentication middleware
+│   ├── models/              # Mongoose schemas
+│   ├── routes/              # API routes
+│   ├── .env                 # Environment variables
+│   └── server.js            # Backend entry point
+│
 └── frontend/
     ├── src/
-    │   ├── pages/       # Login, Register, and Homepage views
-    │   ├── App.js       # React root routing configuration
-    │   └── index.js     # React application mounting point
+    │   ├── pages/           # Login, Register, Dashboard pages
+    │   ├── components/      # Reusable UI components
+    │   ├── App.jsx          # Route configuration
+    │   └── main.jsx         # Application entry point
+```
 
+---
 
+## 🔐 Authentication Flow
+
+### Email & Password Authentication
+
+1. User registers with name, email, and password.
+2. Password is hashed using bcryptjs before storage.
+3. User logs in with credentials.
+4. Server generates a JWT token.
+5. Protected routes validate the token before granting access.
+
+### Google Authentication
+
+1. User clicks **Continue with Google**.
+2. Google verifies the user's identity.
+3. Frontend sends the Google credential token to the backend.
+4. Backend validates the token.
+5. A new account is created automatically if the user does not exist.
+6. JWT token is generated and returned to the frontend.
+7. User is redirected to the protected dashboard.
+
+---
+
+## 🎯 Future Improvements
+
+* Email verification
+* Password reset functionality
+* Refresh tokens
+* Role-based authorization
+* Profile picture uploads
+* Two-factor authentication (2FA)
+
+---
+
+## 📜 License
+
+This project is open-source and available under the MIT License.
