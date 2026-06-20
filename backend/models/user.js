@@ -15,8 +15,20 @@ const userSchema= new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true,
+        required:function(){
+            return !this.googleId;
+        },
         minlength:[4,"password must be at least 4 character"],
+    },
+    googleId :
+    { type:String,
+        unique:true,
+        sparse:true,
+
+    },
+    isVerified:{
+        type:Boolean,
+        default:false,
     }
 },{timestamps:true});
 

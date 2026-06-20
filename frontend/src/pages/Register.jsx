@@ -22,14 +22,17 @@ export default function Register({ setUser }) {
       toast.error("Please Enter all required fields");
       return;
     }
+    else if(userName.length<4)
+    {
+      toast.error("User name msut be at least 4 character");
+      return;
+    }
     else {
       try {
         setIsRegistering(true); 
         const res = await axios.post("http://localhost:5000/api/user/register", formData);
 
         localStorage.setItem("token", res.data.token);
-        console.log("reached here");
-        console.log(res.data);
         setUser(res.data.user);
         toast.success("Registered successfully");
         navigate("/login");
